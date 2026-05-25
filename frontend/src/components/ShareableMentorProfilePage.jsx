@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { API_URL } from '../services/api.js';
 import { BadgeCheck, Clock3, GraduationCap, MapPin, MessageSquareMore, Star } from 'lucide-react';
 
@@ -65,48 +65,55 @@ const normalizeMentorData = (raw, mentorId) => {
     };
 };
 
+const readMentorFromStorage = (mentorId) => {
+    try {
+        const storedProfiles = localStorage.getItem('atyant_mentor_profiles');
+        if (!storedProfiles) return null;
+        const parsed = JSON.parse(storedProfiles);
+        return parsed?.[mentorId] || null;
+    } catch {
+        return null;
+    }
+};
+
 const ShareableMentorProfilePage = () => {
     const { mentorId } = useParams();
-    const [mentor, setMentor] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const location = useLocation();
+    const [mentor, setMentor] = useState(() => {
+        const routeSnapshot = location.state?.mentorSnapshot;
+        if (routeSnapshot) return normalizeMentorData(routeSnapshot, mentorId);
+
+        const storedSnapshot = readMentorFromStorage(mentorId);
+        if (storedSnapshot) return normalizeMentorData(storedSnapshot, mentorId);
+
+        return fallbackMentor(mentorId);
+    });
+    const [hydrated, setHydrated] = useState(false);
 
     useEffect(() => {
         let cancelled = false;
 
         const loadMentor = async () => {
             try {
-                const storedProfiles = localStorage.getItem('atyant_mentor_profiles');
-                if (storedProfiles) {
-                    const parsed = JSON.parse(storedProfiles);
-                    if (parsed?.[mentorId]) {
-                        if (!cancelled) {
-                            setMentor(normalizeMentorData(parsed[mentorId], mentorId));
-                            setLoading(false);
-                        }
-                        return;
-                    }
+                const storedSnapshot = readMentorFromStorage(mentorId);
+                if (storedSnapshot) {
+                    if (!cancelled) setMentor(normalizeMentorData(storedSnapshot, mentorId));
+                    return;
                 }
 
                 const response = await fetch(`${API_URL}/api/mentor/mentors/${mentorId}`);
                 if (response.ok) {
                     const data = await response.json();
-                    if (!cancelled) {
-                        setMentor(normalizeMentorData(data, mentorId));
-                        setLoading(false);
-                    }
+                    if (!cancelled) setMentor(normalizeMentorData(data, mentorId));
                     return;
                 }
 
-                if (!cancelled) {
-                    setMentor(fallbackMentor(mentorId));
-                    setLoading(false);
-                }
+                if (!cancelled) setMentor(fallbackMentor(mentorId));
             } catch (error) {
                 console.error('Failed to load mentor profile:', error);
-                if (!cancelled) {
-                    setMentor(fallbackMentor(mentorId));
-                    setLoading(false);
-                }
+                if (!cancelled) setMentor(fallbackMentor(mentorId));
+            } finally {
+                if (!cancelled) setHydrated(true);
             }
         };
 
@@ -127,19 +134,14 @@ const ShareableMentorProfilePage = () => {
             .join('');
     }, [mentor?.name]);
 
-    if (loading) {
-        return (
-            <section className="min-h-screen bg-white px-4 py-16">
-                <div className="mx-auto max-w-4xl rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-                    <p className="text-center text-slate-600">Loading mentor profile...</p>
-                </div>
-            </section>
-        );
-    }
-
     return (
         <section className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(79,70,229,0.10),_transparent_35%),linear-gradient(to_bottom,_#f8fafc,_#ffffff)] px-4 py-8 sm:py-12">
             <div className="mx-auto max-w-6xl space-y-6">
+                {!hydrated && (
+                    <div className="rounded-3xl border border-slate-200 bg-white/70 px-5 py-3 text-sm text-slate-500 shadow-sm backdrop-blur">
+                        Loading the latest profile details...
+                    </div>
+                )}
                 <div className="rounded-[2rem] border border-slate-200 bg-white shadow-[0_18px_60px_rgba(15,23,42,0.08)]">
                     <div className="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
                         <div className="relative overflow-hidden rounded-t-[2rem] bg-[linear-gradient(180deg,_rgba(79,70,229,0.96),_rgba(37,99,235,0.95))] p-6 text-white sm:p-8 lg:rounded-l-[2rem] lg:rounded-tr-none">

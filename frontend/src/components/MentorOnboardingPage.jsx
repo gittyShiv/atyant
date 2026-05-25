@@ -74,6 +74,7 @@ const MentorOnboardingPage = () => {
     const [form, setForm] = useState(initialForm);
     const [errors, setErrors] = useState({});
     const [submittedMentorId, setSubmittedMentorId] = useState('');
+    const [publishedProfile, setPublishedProfile] = useState(null);
     const [direction, setDirection] = useState(1);
 
     const progressPercent = useMemo(() => (step / TOTAL_STEPS) * 100, [step]);
@@ -199,6 +200,7 @@ const MentorOnboardingPage = () => {
 
         localStorage.setItem('atyant_mentor_profiles', JSON.stringify(parsedProfiles));
         localStorage.setItem('atyant_last_mentor_profile_id', mentorId);
+        setPublishedProfile(profilePayload);
         setSubmittedMentorId(mentorId);
     };
 
@@ -231,7 +233,7 @@ const MentorOnboardingPage = () => {
                     <div className="mt-8 flex justify-center">
                         <button
                             type="button"
-                            onClick={() => navigate(`/mentor/${submittedMentorId}`)}
+                            onClick={() => navigate(`/mentor/${submittedMentorId}`, { state: { mentorSnapshot: publishedProfile } })}
                             className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-blue-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5 hover:shadow-xl"
                         >
                             View My Profile
