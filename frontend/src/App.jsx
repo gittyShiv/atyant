@@ -19,32 +19,34 @@ import { API_URL } from './services/api.js';
 
 
 // Lazy-loaded pages
-const Home              = lazy(() => import('./components/Home'));
-const Dashboard         = lazy(() => import('./components/Dashboard'));
-const Login             = lazy(() => import('./components/Login'));
-const Signup            = lazy(() => import('./components/signup'));
-const ChatPage          = lazy(() => import('./components/ChatPage'));
-const MentorListPage    = lazy(() => import('./components/MentorListPage'));
-const ForgotPassword    = lazy(() => import('./components/ForgotPassword'));
+const Home = lazy(() => import('./components/Home'));
+const Dashboard = lazy(() => import('./components/Dashboard'));
+const Login = lazy(() => import('./components/Login'));
+const Signup = lazy(() => import('./components/signup'));
+const ChatPage = lazy(() => import('./components/ChatPage'));
+const MentorListPage = lazy(() => import('./components/MentorListPage'));
+const ForgotPassword = lazy(() => import('./components/ForgotPassword'));
 const ResetPasswordPage = lazy(() => import('./components/ResetPasswordPage'));
-const ProfilePage       = lazy(() => import('./components/ProfilePage'));
+const ProfilePage = lazy(() => import('./components/ProfilePage'));
 const PublicProfilePage = lazy(() => import('./components/PublicProfilePage'));
-const NearbyMentors     = lazy(() => import('./components/NearbyMentors'));
-const InternshipPage    = lazy(() => import('./components/InternshipPage'));
-const CommunityChat     = lazy(() => import('./components/CommunityChat'));
-const EngineView        = lazy(() => import('./components/EngineView'));
-const MentorDashboard   = lazy(() => import('./components/MentorDashboard'));
+const NearbyMentors = lazy(() => import('./components/NearbyMentors'));
+const InternshipPage = lazy(() => import('./components/InternshipPage'));
+const CommunityChat = lazy(() => import('./components/CommunityChat'));
+const EngineView = lazy(() => import('./components/EngineView'));
+const MentorDashboard = lazy(() => import('./components/MentorDashboard'));
 const MentorMonetization = lazy(() => import('./components/MentorMonetization'));
 const MentorProfilePage = lazy(() => import('./components/MentorProfilePage'));
+const ShareableMentorProfilePage = lazy(() => import('./components/ShareableMentorProfilePage'));
+const MentorOnboardingPage = lazy(() => import('./components/MentorOnboardingPage'));
 const MyBookings = lazy(() => import('./components/MyBookings'));
 const RoleBasedDashboard = lazy(() => import('./components/RoleBasedDashboard'));
-const MyQuestions       = lazy(() => import('./components/MyQuestionsEnhanced'));
+const MyQuestions = lazy(() => import('./components/MyQuestionsEnhanced'));
 const EnhancedAskQuestion = lazy(() => import('./components/EnhancedAskQuestion'));
-const AdminDashboard    = lazy(() => import('./components/AdminDashboard'));
-const CareerGuidesPage  = lazy(() => import('./components/CareerGuidesPage'));
-const AuthSuccess       = lazy(() => import('./components/AuthSuccess'));
-const PrivacyPolicy     = lazy(() => import('./components/PrivacyPolicy'));
-const TermsOfService     = lazy(() => import('./components/TermsOfService'));
+const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
+const CareerGuidesPage = lazy(() => import('./components/CareerGuidesPage'));
+const AuthSuccess = lazy(() => import('./components/AuthSuccess'));
+const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
+const TermsOfService = lazy(() => import('./components/TermsOfService'));
 const IntelligenceTerminal = lazy(() => import('./components/intelligenceTerminal'));
 // Community notifications — static, no need inside component
 const COMMUNITY_NOTIFICATIONS = [
@@ -64,10 +66,10 @@ function App() {
   const location = useLocation();
   const { user, login } = useContext(AuthContext);
 
-  const [showGoogleModal,    setShowGoogleModal]    = useState(false);
-  const [showCommunityChat,  setShowCommunityChat]  = useState(false);
-  const [newMessageCount,    setNewMessageCount]    = useState(0);
-  const [lastMessageId,      setLastMessageId]      = useState(null);
+  const [showGoogleModal, setShowGoogleModal] = useState(false);
+  const [showCommunityChat, setShowCommunityChat] = useState(false);
+  const [newMessageCount, setNewMessageCount] = useState(0);
+  const [lastMessageId, setLastMessageId] = useState(null);
   const [currentNotification, setCurrentNotification] = useState(0);
 
   const isChatPage = location.pathname === '/chat';
@@ -145,9 +147,9 @@ function App() {
   const handleGoogleSuccess = useCallback((credentialResponse) => {
     if (!credentialResponse?.credential) return;
     fetch(`${API_URL}/api/auth/google-login`, {
-      method : 'POST',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body   : JSON.stringify({ token: credentialResponse.credential })
+      body: JSON.stringify({ token: credentialResponse.credential })
     })
       .then(r => r.json())
       .then(data => {
@@ -176,39 +178,41 @@ function App() {
           <ErrorBoundary>
             <Routes>
               {/* Public */}
-              <Route path="/"                      element={<Home />} />
-              <Route path="/signup"                element={<Signup />} />
-              <Route path="/login"                 element={<Login />} />
-              <Route path="/auth-success"          element={<AuthSuccess />} />
-              <Route path="/forgot-password"       element={<ForgotPassword />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/auth-success" element={<AuthSuccess />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
-              <Route path="/internships"           element={<InternshipPage />} />
+              <Route path="/internships" element={<InternshipPage />} />
 
-               {/* Added: /dad route shows InternshipPage */}
-               <Route path="/dad"           element={<InternshipPage />} />
-              <Route path="/career-guides"         element={<CareerGuidesPage />} />
-              <Route path="/profile/:username"     element={<PublicProfilePage />} />
+              {/* Added: /dad route shows InternshipPage */}
+              <Route path="/dad" element={<InternshipPage />} />
+              <Route path="/career-guides" element={<CareerGuidesPage />} />
+              <Route path="/profile/:username" element={<PublicProfilePage />} />
               <Route path="/resume-store" element={<ResumeMarketplace />} />
+              <Route path="/mentor-onboarding" element={<MentorOnboardingPage />} />
+              <Route path="/mentor/:mentorId" element={<ShareableMentorProfilePage />} />
 
               {/* Protected */}
-              <Route path="/dashboard"        element={<ProtectedRoute><RoleBasedDashboard /></ProtectedRoute>} />
-              <Route path="/mentors"          element={<ProtectedRoute><MentorListPage /></ProtectedRoute>} />
-              <Route path="/chat"             element={<ProtectedRoute><ErrorBoundary><ChatPage /></ErrorBoundary></ProtectedRoute>} />
-              <Route path="/chat/:mentorId"   element={<ProtectedRoute><ErrorBoundary><ChatPage /></ErrorBoundary></ProtectedRoute>} />
-              <Route path="/profile"          element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-              <Route path="/nearby-mentors"   element={<ProtectedRoute><NearbyMentors /></ProtectedRoute>} />
+              <Route path="/dashboard" element={<ProtectedRoute><RoleBasedDashboard /></ProtectedRoute>} />
+              <Route path="/mentors" element={<ProtectedRoute><MentorListPage /></ProtectedRoute>} />
+              <Route path="/chat" element={<ProtectedRoute><ErrorBoundary><ChatPage /></ErrorBoundary></ProtectedRoute>} />
+              <Route path="/chat/:mentorId" element={<ProtectedRoute><ErrorBoundary><ChatPage /></ErrorBoundary></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+              <Route path="/nearby-mentors" element={<ProtectedRoute><NearbyMentors /></ProtectedRoute>} />
               <Route path="/engine/:questionId" element={<ProtectedRoute><EngineView /></ProtectedRoute>} />
               <Route path="/answer/:answerCardId" element={<ProtectedRoute><EngineView isAnswerView={true} /></ProtectedRoute>} />
-              <Route path="/my-questions"     element={<ProtectedRoute><MyQuestions /></ProtectedRoute>} />
-              <Route path="/ask"              element={<ProtectedRoute><EnhancedAskQuestion /></ProtectedRoute>} />
-              <Route path="/intelligence"     element={<ProtectedRoute><IntelligenceTerminal /></ProtectedRoute>} />
+              <Route path="/my-questions" element={<ProtectedRoute><MyQuestions /></ProtectedRoute>} />
+              <Route path="/ask" element={<ProtectedRoute><EnhancedAskQuestion /></ProtectedRoute>} />
+              <Route path="/intelligence" element={<ProtectedRoute><IntelligenceTerminal /></ProtectedRoute>} />
               <Route path="/mentor-dashboard" element={<ProtectedRoute><MentorDashboard /></ProtectedRoute>} />
               <Route path="/mentor-monetization" element={<ProtectedRoute><MentorMonetization /></ProtectedRoute>} />
-              <Route path="/mentor/:mentorId" element={<MentorProfilePage />} />
+              <Route path="/mentor-details/:mentorId" element={<MentorProfilePage />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
               <Route path="/my-bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
-              <Route path="/admin-dashboard"  element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
             </Routes>
           </ErrorBoundary>
         </Suspense>
@@ -231,7 +235,7 @@ function App() {
       <GoogleLoginModal
         isOpen={showGoogleModal && !user}
         onSuccess={handleGoogleSuccess}
-        onError={() => {}}
+        onError={() => { }}
         onClose={handleModalClose}
       />
     </div>

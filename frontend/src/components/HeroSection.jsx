@@ -5,6 +5,7 @@ import { useAuth } from '../AuthContext';
 import './HeroSection.css';
 import LoadingSpinner from './LoadingSpinner';
 import { API_URL } from '../services/api.js';
+import { ArrowRight, BadgeCheck } from 'lucide-react';
 
 const HeroSection = () => {
   const [problem, setProblem] = useState('');
@@ -227,7 +228,7 @@ const HeroSection = () => {
         {/* Badge */}
         <div className="hero-badge">
           <span className="hero-badge-dot" />
-           India's career execution intelligence platform
+          India's career execution intelligence platform
         </div>
 
         {/* Heading */}
@@ -286,6 +287,18 @@ const HeroSection = () => {
             </div>
           </div>
           <span className="hero-ai-banner-arrow">→</span>
+        </Link>
+
+        {/* Mentor onboarding CTA */}
+        <Link to="/mentor-onboarding" className="hero-mentor-banner">
+          <div className="hero-mentor-banner-left">
+            <span className="hero-mentor-banner-icon"><BadgeCheck size={16} /></span>
+            <div>
+              <div className="hero-mentor-banner-title">Become a verified mentor</div>
+              <div className="hero-mentor-banner-sub">Join Atyant and publish your public mentor profile in a few steps</div>
+            </div>
+          </div>
+          <span className="hero-mentor-banner-arrow"><ArrowRight size={18} /></span>
         </Link>
 
         {/* Confirmation Modal */}

@@ -70,6 +70,7 @@ const Navbar = () => {
       <>
         <Link to="/internships" className="nav-link internship-link" onClick={close}><GraduationCap size={18} /> Internships</Link>
         <Link to="/career-guides" className="nav-link career-guides-link" onClick={close}><GraduationCap size={18} /> Career Guides</Link>
+        <Link to="/mentor-onboarding" className="nav-button primary" onClick={close}>Become a Mentor</Link>
         <Link to="/login" className="nav-button" onClick={close}>Login</Link>
         <Link to="/signup" className="nav-button primary" onClick={close}>Sign Up</Link>
       </>
@@ -80,6 +81,7 @@ const Navbar = () => {
         <Link to="/dashboard" className="nav-link dashboard-link" onClick={close}>Dashboard</Link>
         <Link to="/chat" className="nav-link mentor-chat-link" onClick={close}>Student Chats</Link>
         <Link to="/internships" className="nav-link internship-link" onClick={close}><GraduationCap size={18} /> Internships</Link>
+        <Link to="/mentor-onboarding" className="nav-button primary" onClick={close}>Mentor Setup</Link>
       </>
     );
 
@@ -87,6 +89,7 @@ const Navbar = () => {
       <>
         <Link to="/my-questions" className="nav-link" onClick={close}>My Questions</Link>
         <Link to="/internships" className="nav-link internship-link" onClick={close}><GraduationCap size={18} /> Internships</Link>
+        <Link to="/mentor-onboarding" className="nav-button primary" onClick={close}>Become a Mentor</Link>
       </>
     );
   };
