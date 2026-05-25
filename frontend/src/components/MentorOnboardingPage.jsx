@@ -245,10 +245,10 @@ const MentorOnboardingPage = () => {
 
     return (
         <section className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.10),_transparent_35%),linear-gradient(to_bottom,_#f8fafc,_#ffffff)] px-4 py-6 sm:py-10">
-            <div className="mx-auto max-w-7xl">
+            <div className="mx-auto w-full max-w-[1440px]">
                 <div className="mb-6 rounded-[2rem] border border-slate-200 bg-white/90 px-5 py-5 shadow-[0_18px_60px_rgba(15,23,42,0.08)] backdrop-blur sm:px-8 sm:py-7">
-                    <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-                        <div className="max-w-2xl">
+                    <div className="flex flex-col gap-4">
+                        <div className="max-w-3xl text-left">
                             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-indigo-600">Become a verified mentor on Atyant</p>
                             <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Mentor onboarding</h1>
                             <p className="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
@@ -256,7 +256,7 @@ const MentorOnboardingPage = () => {
                             </p>
                         </div>
 
-                        <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+                        <div className="flex w-fit items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
                             <ShieldCheck className="text-indigo-600" size={18} />
                             Verified profile setup
                         </div>
@@ -289,7 +289,7 @@ const MentorOnboardingPage = () => {
                     </div>
                 </div>
 
-                <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+                <div className="grid gap-6 xl:grid-cols-[minmax(0,1.08fr)_minmax(360px,0.92fr)]">
                     <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-[0_18px_60px_rgba(15,23,42,0.08)] sm:p-8">
                         <AnimatePresence mode="wait" initial={false} custom={direction}>
                             <motion.form
