@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { BriefcaseBusiness, ChevronLeft, ChevronRight, Clock3, GraduationCap, ShieldCheck, Sparkles, UserRound } from 'lucide-react';
 
 const TOTAL_STEPS = 4;
-const EXPERTISE_OPTIONS = ['DSA', 'Web Dev', 'GATE', 'Core Engineering', 'Finance'];
+const EXPERTISE_OPTIONS = ['DSA', 'Web Dev', 'GATE', 'Core Engineering','System Design', 'Data Science','Finance'];
 const LANGUAGE_OPTIONS = ['English', 'Hindi', 'Hinglish'];
 
 const initialForm = {
@@ -26,6 +26,7 @@ const hardcodedSlots = [
     { day: 'Monday', time: '7:00 PM - 8:00 PM' },
     { day: 'Wednesday', time: '8:30 PM - 9:30 PM' },
     { day: 'Saturday', time: '11:00 AM - 1:00 PM' },
+    { day: 'Sunday', time: '12:00 PM - 1:00 PM' },
 ];
 
 const stepConfig = [
@@ -83,9 +84,9 @@ const MentorOnboardingPage = () => {
         name: form.name || 'Shivam Maurya',
         college: form.college || 'IIT BHU',
         branch: form.branch || 'Computer Science',
-        currentRole: form.currentRole || 'SDE @ Google',
-        company: form.company || 'Google',
-        expertiseTags: form.expertiseTags.length > 0 ? form.expertiseTags : ['DSA', 'Web Dev'],
+        currentRole: form.currentRole || 'SDE @ Microsoft',
+        company: form.company || 'Microsoft',
+        expertiseTags: form.expertiseTags.length > 0 ? form.expertiseTags : ['DSA', 'Web Dev', 'System Design'],
         sessionDuration: form.sessionDuration || '30 min',
         preferredLanguage: form.preferredLanguage || 'English',
         bio: form.bio || 'Helping students make practical career decisions with clear steps and honest feedback.',
